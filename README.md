@@ -1,5 +1,3 @@
-
-
 ## 方差分析 R 操作
 
 方差分析的目的在于分析某一或某些解释变量对数值响应变量的影响作用, 一般来说有如下几个步骤：
@@ -26,9 +24,9 @@ aov(y ~ A, data = ) # y —— 因变量, A —— 自变量(类型为因子)
 
 符号 | 用法
 -----| ----------
- \+   | y ~ A + B + C, 自变量 A、B、C 对 因变量 y 的影响
- \:   | y ~ A + B + A:B, A、B 及 A 与 B 的交互项对 y 的影响
- \*   | y ~ A * B , 表示 y ~ A + B + A:B
+\+    | y ~ A + B + C, 自变量 A、B、C 对 因变量 y 的影响
+\：   | y ~ A + B + A:B, A、B 及 A 与 B 的交互项对 y 的影响
+\*    | y ~ A * B , 表示 y ~ A + B + A:B
 
 #### Step 3 计算效应值(effect size)
 
@@ -40,9 +38,11 @@ aov(y ~ A, data = ) # y —— 因变量, A —— 自变量(类型为因子)
 
 - Tukey-Kramer 法: R 自带的 `TukeyHSD()` 函数(要求各处理组中样本容量相同)
 
-- DTK 法：**DTK**包的`DTK.test()`函数
+- DTK 法：**DTK** 包的`DTK.test()`函数
 
-- **multcomp**包的`glht()`函数
+- **multcomp** 包的`glht()`函数
+
+下面主要详细介绍单因素方差分析与双因素方差分析的 R 实现过程, 并对单因素方差分析的结果进行解释. 另外, 还会简单介绍如何用 R 进行单因素协方差分析、重复测量方差分析以及单因素多元方差分析.
 
 ## 单因素方差分析
 
@@ -111,14 +111,14 @@ lapply(x, shapiro.test)
 
 每组的 P 值均大于 0.05, 故不能拒绝正态性假设.
 
-- 也可以用 Q-Q 图来进行检验
+-  Q-Q 图
 
 ```{r}
 library(car)
 qqPlot(lm(response ~ trt, data = cholesterol), simulate = TRUE, main = "Q-Q Plot")
 ```
 
-数据落在95%的置信区间范围内，说明满足正态性假设.
+数据落在95%的置信区间范围内, 说明满足正态性假设.
 
 #### 方差齐性检验
 
@@ -141,7 +141,7 @@ library(car)
 leveneTest(response ~ trt)
 ```
 
-三个不同方法的检验, P 值均很大, 表明不能拒绝方差齐性的假设.
+三个不同方法的检验结果, P 值均很大, 说明不能拒绝方差齐性的假设.
 
 #### 方差分析
 
@@ -175,7 +175,7 @@ library(pwr)
 pwr.anova.test(k = 5, n = 10, sig.level = 0.05, power = 0.9)
 ```
 
-*f 为该分析要达到0.8的功效, 并选择0.05的显著性水平时的效应值*
+*f 为该分析要达到 0.8 的功效, 并选择 0.05 的显著性水平时的效应值*
 
 #### 多重比较
 
@@ -196,7 +196,7 @@ plot(TukeyHSD(model_one))
 
 *图中的虚直线横坐标为 0, 实横线表示对应的两组均值差之间的指定显著性水平的置信区间. 若置信区间与虚线相交, 则说明两组之间的差异在统计上不显著; 若不相交,则两组之间的差异在统计上显著.*
 
-- DTK 法：**DTK**包的`DTK.test()`函数
+- DTK 法：**DTK** 包的 `DTK.test()` 函数
 
 ```{r}
 library(DTK)
@@ -221,7 +221,7 @@ detach(cholesterol)
 
 ## 双因素方差分析
 
-例: 以基础安装中的 ToothGrowth 数据集为例, 随机分配 60 只豚鼠, 分别采用两种喂食方法(橙汁或维生素 c), 各喂食方法中抗坏血酸含量有三种水平(0.5mg、1mg 或 2mg), 每种处理方式组合都被分配10只豚鼠, 牙齿长度(len)为因变量.
+- 例: 以基础安装中的 ToothGrowth 数据集为例, 随机分配 60 只豚鼠, 分别采用两种喂食方法(橙汁或维生素 c), 各喂食方法中抗坏血酸含量有三种水平(0.5mg、1mg 或 2mg), 每种处理方式组合都被分配10只豚鼠, 牙齿长度(len)为因变量.
 
 ```{r}
 attach(ToothGrowth)
@@ -266,7 +266,7 @@ y <- split(toothgrowth$len, toothgrowth$Group)
 lapply(y, shapiro.test)
 ```
 
-- 可以通过绘图的方式进行直观的了解
+- 可以通过绘图进行直观的了解
 
 ```{r}
 stripchart(toothgrowth$len ~ toothgrowth$Group, vertical = TRUE,
@@ -318,7 +318,7 @@ interaction2wt(len ~ supp * dose)
 
 #### 简单效应检验
 
-另外, 当发现交互效应显著时, 需要作进一步地简单效应检验
+另外, 当交互效应显著时, 需要做进一步地简单效应检验, 命令如下:
 
 ```{r}
 library(phia)
@@ -335,12 +335,14 @@ testInteractions(mod, custom = dose1.vs.dose2, across = "supp", adjustment = "no
 
 #### 多重比较
 
+当简单效应显著时，可做多重比较, 命令如下:
+
 ```{r}
 TukeyHSD(model_two)
 detach(toothgrowth)
 ```
 
-*这一命令会出现三部分的结果. 首先是对因子 supp 的不同水平之间做多重比较; 其次是对因子 dose 的不同水平之间做多重比较; 再次是对 6 个处理组合之间的两两均值差做比较*
+*这一命令会出现三部分的结果. 首先是对因子 supp 的不同水平之间做多重比较; 其次是对因子 dose 的不同水平之间做多重比较; 再次是对 6 个处理组合之间的两两均值差做比较.*
 
 ## 单因素协方差分析(ANCOVA)
 
@@ -369,7 +371,7 @@ litter %>% group_by(dose) %>% summarise(mean = round(mean(weight), 2),
 
 #### 回归斜率同质检验
 
-ANCOVA 与ANOVA 一样, 都需要正态性和方差齐性假设, 假设检验步骤同上. 另外, ANCOVA 还需检验回归斜率相同假设, 即在本例中, 有四个处理组通过怀孕时间来预测出生体重的回归斜率都相同的假设, 可通过交互效应来检验回归斜率的同质性. 若交互效应不显著则支持回归斜率相同假设.
+ANCOVA 与 ANOVA 一样, 都需要正态性和方差齐性假设, 假设检验步骤同上. 另外, ANCOVA 还需检验回归斜率相同假设, 即在本例中, 有四个处理组通过怀孕时间来预测出生体重的回归斜率都相同的假设, 可通过交互效应来检验回归斜率的同质性. 若交互效应不显著则支持回归斜率相同假设.
 
 ```{r}
 model_ancova <- aov(weight ~ gesttime * dose, data = litter)
@@ -396,7 +398,7 @@ ancova(weight ~ gesttime + dose, data = litter)
 
 #### 多重比较
 
-- 可以使用 **multcomp** 包中的 `glht()` 函数
+- 可使用 **multcomp** 包中的 `glht()` 函数
 
 ```{r}
 tukey <- glht(model_one_anc, linfct = mcp(dose = "Tukey"))
@@ -419,7 +421,7 @@ detach(litter)
 
 主要介绍包含一个组间和一个组内因子的重复测量方差分析
 
-- 例: 以基础安装包中的 CO2 数据集为例. 研究在某浓度二氧化碳的环境中，寒带植物与非寒带植物的光合作用率的比较. 因变量是二氧化碳吸收量(uptake), 单位为 ml/L, 自变量是植物类型 Type (魁北克 VS. 密西西比)和七种水平（95~1000 umol/m ^ 2 sec）的二氧化碳浓度(conc). 另外, Type是组间因子, conc是组内因子.
+- 例: 以基础安装包中的 CO2 数据集为例. 研究在某浓度二氧化碳的环境中，寒带植物与非寒带植物的光合作用率的比较. 因变量是二氧化碳吸收量(uptake), 单位为 ml/L, 自变量是植物类型 Type (魁北克 VS. 密西西比)和七种水平（95~1000 umol/m ^ 2 sec）的二氧化碳浓度(conc). 另外, Type 是组间因子, conc 是组内因子.
 
 ```{r}
 library(dplyr)
@@ -438,14 +440,16 @@ mauchly.test(mlm, X = ~ 1)
 ```
 
 ```{r}
-x <- arrange(co2, conc, Type)
-x <- mutate(x, Group = rep(LETTERS[1:14], each = 3))
-x <- mutate(x, id = case_when(
+ arrange(co2, conc, Type) %>% 
+ mutate(Group = rep(LETTERS[1:14], each = 3),
+            id = case_when(
    Plant == "Qc1" | Plant == "Mc1" ~ "a",
    Plant == "Qc2" | Plant == "Mc2" ~ "b",
-   Plant == "Qc3" | Plant == "Mc3" ~ "c"))
-x <- select(x, id, Group, uptake)
+   Plant == "Qc3" | Plant == "Mc3" ~ "c")) -> x
+```
 
+```
+x <- select(x, id, Group, uptake)
 library(tidyr)
 y <- spread(x, Group, uptake)
 y1 <- y[, 2:15] 
@@ -496,6 +500,8 @@ y <- cbind(calories, fat, sugars)
 options(digits = 3)
 aggregate(y, by = list(shelf), FUN = mean)
 ```
+
+#### 方差分析
 
 ```{r}
 model_mult <- manova(y ~ shelf)
