@@ -15,7 +15,7 @@
 ```
 library(jiebaR)
 ```
-##### 案例引入
+#### 案例引入
 
 - 调用分词器 `worker()` 并命名。
 ```
@@ -39,7 +39,7 @@ fc[c("R语言是门出色的编程语言", "今天是2019年某月某日")]
 worker(type = "mix", dict = DICTPATH, hmm = HMMPATH, user = USERPATH, idf = IDFPATH, stop_word = STOPPATH, write = T, 
        qmax = 20, topn = 5, encoding = "UTF-8", detect = T, symbol = F, lines = 1e+05, output = NULL, bylines = F, user_weight = "max")
 ```
-##### 配置词典
+#### 配置词典
 
 - 对于分词结果好坏的关键因素是词典，**jiebaR**有默认的系统词典，可通过 `show_dictpath()` 函数查看其路径。
 ```
@@ -63,7 +63,7 @@ dir(show_dictpath())
 
 *对于不同的行业或文字类型，应用专门的分词词典，可通过参数 `user` 自定义用户词典。*
 
-##### 停止词过滤
+#### 停止词过滤
 
 停止词就是分词过程中，不需要作为结果的词，比如*的、地、得、我、你、他*等。这些词出现频率高，但影响分词结果，应过滤掉。
 
@@ -73,7 +73,7 @@ fc <- worker(user = "C:\\Users\\john\\Documents\\R\\win-library\\3.5\\jiebaRD\\d
 ```
 其中，参数 `user = "C:\\Users\\john\\Documents\\R\\win-library\\3.5\\jiebaRD\\dict\\user.txt"` 定义用户词典，`stop_word = 'C:\\Users\\john\\Documents\\R\\win-library\\3.5\\jiebaRD\\dict\\stop_word.txt'` 定义停止词词典(涉及路径均为编者自带，应按需要更改)。
 
-##### 文件分词
+#### 文件分词
 - 用函数 `readLines` 读取文件
 ```
 gwr <- readLines("gwr.csv") 
