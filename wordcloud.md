@@ -3,6 +3,7 @@
 步骤如下：
 - 获取数据(以 *政府工作报告* 为例)
 - 分词( **jiebaR** 分词包)
+- 统计词频
 - 画词云( **wordcolud2** 词云包)
 
 需安装的 R 包如下：**jiebaRD**, **jiebaR**, **Rcpp**, **wordcloud2**。
@@ -14,7 +15,7 @@
 ```
 library(jiebaR)
 ```
-#### 案例说明
+#### 案例引入
 
 - 调用分词器 `worker()` 并命名。
 ```{r}
@@ -33,50 +34,14 @@ segment("R语言是门出色的编程语言", fc)
 fc <- worker(bylines = TRUE)
 fc[c("R语言是门出色的编程语言", "今天是2019年某月某日")]
 ```
+- `worker()` 分词器还有如下参数，可按需要调用：
+```
+worker(type = "mix", dict = DICTPATH, hmm = HMMPATH, user = USERPATH, idf = IDFPATH, stop_word = STOPPATH, write = T, 
+       qmax = 20, topn = 5, encoding = "UTF-8", detect = T, symbol = F, lines = 1e+05, output = NULL, bylines = F, user_weight = "max")
+```
+#### 配置词典
 
-
-worker(type = "mix", dict = DICTPATH, hmm = HMMPATH, user = USERPATH,
-  idf = IDFPATH, stop_word = STOPPATH, write = T, qmax = 20, topn = 5,
-  encoding = "UTF-8", detect = T, symbol = F, lines = 1e+05,
-  output = NULL, bylines = F, user_weight = "max")
-
-
-type, 引擎类型:
-
-      混合模型(MixSegment):是四个分词引擎里面分词效果较好的类，结它合使   用最大概率法和隐式马尔科夫模型。
-    
-      最大概率法(MPSegment):负责根据Trie树构建有向无环图和进行动态规划   算法，是分词算法的核心。
-    
-      隐式马尔科夫模型(HMMSegment):是根据基于人民日报等语料库构建的HMM模型来进行分词，主要算法思路是根据(B,E,M,S)四个状态来代表每个字的隐藏状态。HMM模型由dict/hmm_model.utf8提供。分词算法即viterbi算法。
-    
-      索引模型(QuerySegment):先使用混合模型进行切词，再对于切出来的较长   的词，枚举句子中所有可能成词的情况，找出词库里存在。
-    
-      标记模型(tag)
-    
-      Simhash模型(simhash)
-    
-      关键词模型(keywods)
-    
-dict,      系统词典
-hmm,       HMM模型路径
-user,      用户词典
-idf,       IDF词典
-stop_word, 关键词用停止词库
-write,     是否将文件分词结果写入文件，默认FALSE
-qmax,      最大成词的字符数，默认20个字符
-topn,      关键词数,默认5个
-encoding,  输入文件的编码，默认UTF-8
-detect,    是否编码检查，默认TRUE
-symbol,    是否保留符号，默认FALSE
-lines,     每次读取文件的最大行数，用于控制读取文件的长度。大文件则会分            次读取。
-output,    输出路径
-bylines,   按行输出
-user_weight,用户权重
-
-
-### 配置词典
-
-对于分词的结果好坏的关键因素是词典，jiebaR默认有配置标准的词典。对于我们的使用来说，不同行业或不同的文字类型，最好用专门的分词词典。在jiebaR中通过`show_dictpath()`函数可以查看默认的标准词典
+对于分词结果好坏的关键因素是词典，jiebaR默认有配置标准的词典。对于我们的使用来说，不同行业或不同的文字类型，最好用专门的分词词典。在jiebaR中通过`show_dictpath()`函数可以查看默认的标准词典
 
 ```{r}
 show_dictpath() # 查看字典路径
