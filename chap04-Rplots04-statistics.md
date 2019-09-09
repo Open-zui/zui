@@ -21,16 +21,8 @@ ann        | 逻辑值, 是否绘制标题与标签
 axes       | 逻辑值, 是否绘制坐标轴 (不会留下框架线)
 
 ##### 图 4.11
-```{r}
-png(file = "pic-Rplot-41.png")
-set.seed(12345)
-y <- runif(20)
-par(mfrow = c(3, 3), mar = c(2, 2, 2, 2))
-for(i in c("p", "l", "b", "c", "o", "h", "s", "S", "n")){
-  plot(y, type = i, main = paste("type = \"", i, "\"", sep = ""), axes = FALSE)
-  box(col = "darkgray")
-}
-```
+
+![](pic-Rplot-41.png)
 
 ### 条形图
 
@@ -50,13 +42,14 @@ horize     | 逻辑值, 设置长条方向, 水平或垂直
 
 ##### 图 4.12
 
-```{r}
-png(file = "pic-Rplot-42.png")
+```r
 par(mfrow = c(1, 2))
 height <- table(mtcars$cyl, mtcars$gear)
 barplot(height, beside = TRUE, legend.text = c("cyl = 4", "cyl = 6", "cyl = 8"), horiz = FALSE, xlab = "gear", ylab = "Frequency")
 barplot(height, beside = FALSE, legend.text = TRUE, horiz = TRUE, ylab = "gear", xlab = "Frequency")
 ```
+
+![](pic-Rplot-42.png)
 
 ### 直方图
 
@@ -75,35 +68,20 @@ labels     | 逻辑值, 是否将频数数值绘制于长条上方
 
 ##### 图 4.13
 
-```{r}
-png(file = "pic-Rplot-43.png")
+```r
 par(mfrow = c(1, 2), mar = c(4, 3, 2, 0.5), mgp = c(2, 1, 0), cex.axis = 0.8, xpd = TRUE)
 mpg <- mtcars$mpg
 hist(mpg, xlim = c(10, 35), breaks = 10, freq = TRUE, labels = TRUE, main = "")
 hist(mpg, xlim = c(10, 35), breaks = 50, freq = FALSE, labels = FALSE, main = "")
 ```
 
+![](pic-Rplot-43.png)
+
 - 可通过函数 `lines(density())` 添加密度曲线, 函数 `rug()` 添加轴须图, 参见图4.14
 
 ##### 图 4.14
 
-```{r}
-png(file = "pic-Rplot-44.png")
-set.seed(124)
-par(mar = c(3, 4, 1, 2))
-x <- rnorm(20000, 0, 1)
-hist(x, breaks = 40, freq = FALSE,  main = "", xlab = "")
-lines(density(x))
-den <- density(x)
-polygon(den$x, den$y, col = "gray")
-xvalue <- seq(-4, 4, 0.2)
-yvalue <- NULL
-for(i in xvalue){
-  yvalue <- c(yvalue, den$y[which.min(abs(abs(den$x) - abs(i)))])
-}
-segments(xvalue, 0, xvalue, yvalue, lty = 4)
-rug(x)
-```
+![](pic-Rplot-44.png)
 
 ### 箱线图
 
@@ -123,12 +101,13 @@ varwidth   | 逻辑值, 箱线图宽度与样本大小的平方根是否成正�
 ##### 图 4.15
 
 ```{r}
-png(file = "pic-Rplot-45.png")
 par(mfrow = c(1, 2), mar = c(4, 4, 2, 1), mgp = c(2.5, 1, 0))
 
 boxplot(mpg ~ cyl, data = mtcars, notch = FALSE, varwidth = FALSE)
 boxplot(mpg ~ cyl, data = mtcars, notch = TRUE, horizontal = TRUE)
 ```
+
+![](pic-Rplot-45.png)
 
 ### 茎叶图
 
@@ -136,7 +115,6 @@ boxplot(mpg ~ cyl, data = mtcars, notch = TRUE, horizontal = TRUE)
 
 ```
 stem(x, scale, width, ...)
-
 ```
 主要参数   | 描述
 ---------- | -------------
@@ -155,7 +133,7 @@ pie(x, labels)
 
 ##### 图4.16
 
-```{r}
+```r
 png(file = "pic-Rplot-46.png")
 x <- table(mtcars$gear)
 legend_text <- paste("gear = ", seq(3, 5, 1))
@@ -165,6 +143,8 @@ pie(x, labels = lab, col = gray(c(0, 0.4, 0.8)))
 legend("topright", legend_text, pch = 20, col = gray(c(0, 0.4, 0.8)))
 box()
 ```
+
+![](pic-Rplot-46.png)
 
 
 
