@@ -1,8 +1,8 @@
 ## 基本图形参数
 
-- 高级函数作出的图形包含默认的参数设置, 若此无法满足要求, 则可对已有图形进行修饰: 修改参数值或通过低级函数添加新的元素.
+- 高级函数作出的图形包含默认的参数设置, 若无法满足要求, 则可对已有图形进行修饰: 修改参数值或通过低级函数添加新的元素.
 
-- 图形参数可通过函数 `par()` 或者具体作图函数(如 `plot()` 或 `lines()`)的参数进行修改, 二者的区别在于, 前者的设置持续起作用, 后者的设置起临时作用. 同时应注意, 有些参数只能通过函数 `par()` 设置 (粗体表示). 这里介绍常用的参数以及一些可添加元素的低级函数.
+- 图形参数可通过函数 `par()` 或者具体作图函数(如 `plot()` 或 `lines()`)的参数进行修改, 二者的区别在于, 前者的设置持续起作用, 后者的设置起临时作用. 同时应注意, 有些参数只能通过函数 `par()` 设置 (粗体标识). 这里介绍常用的参数以及一些可添加元素的低级函数.
 
 ### 符号与线条
 
@@ -17,41 +17,12 @@ lend      | 线条末端的类型 (取值 0-2)
 
 
 ##### 图 2.11
-```{r}
-png(file = "pic-Rplot-21.png")
-par(cex = 1.2, mar = c(0.5, 1, 0.5, 1))
-plot(x = 6, y = 5, xlim = c(0.8, 6.2), ylim = c(0, 6), pch = 25, ann = FALSE, axes = FALSE)
 
-pch <- 0
-for(x1 in 1:5){
-  pch = pch
-  for(y1 in 5:1){
-    points(x1, y1, pch = pch)
-    text(x1, y1, pch, pos = 2)
-    pch = pch + 1
-  }
-}
-text(6, 5, 25, 2)
-box(lwd = 0.5)
-```
+![](pic-Rplot-21.png)
 
 ##### 图 2.12
 
-```{r}
-png(file = "pic-Rplot-22.png")
-par(lwd = 2, mar = c(0.5, 1, 0.5, 1))
-plot(x = 1:5, y = rep(1, 5), type = "l", xlim = c(0.8, 5), ylim = c(0.5, 6.8), lty = 1, ann = FALSE, axes = FALSE)
-
-lty <- 2
-for(i in 2:6){
-  lty = lty
-  lines(x = 1:5, y = rep(i, 5), lty = lty)
-  text(0.8, i, i)
-  lty = lty + 1
-}
-text(0.8, 1, 1)
-box(lwd = 0.5)
-```
+![](pic-Rplot-22.png)
 
 - 用以添加符号或线条的低级函数, 效果参见图 2.13
 
@@ -67,21 +38,7 @@ grid()      | 绘制网格线                  | grid(nx, ny, ...)
 
 ##### 图 2.13
 
-```{r}
-png(file = "pic-Rplot-23.png")
-set.seed(1234)
-par(mar = c(3, 5, 2, 4), bty = "l")
-plot(1:10, type = "n", xlim = c(0, 12), ylim = c(0, 12), xlab = "", ylab = "", xaxs = "i", yaxs = "i")
-points(2:6, c(10, 8, 10, 8, 10), pch = 21, col = rainbow(5), cex = 15)
-lines(0:12, runif(13, 0.0, 3.0), lty = 2, lwd = 1.5)
-abline(a = 0, b = 1, col = "darkgray")
-segments(0, 6, 6, 6, lty = 2, col = "black")
-segments(6, 0, 6, 6, lty = 2, col = "black")
-arrows(9, 8, 9, 3, length = 0.3, code = 3, col = "red")
-grid()
-box()
-```
-
+![](pic-Rplot-23.png)
 
 ### 颜色
 
@@ -103,22 +60,14 @@ bg        | 背景色
 
 ##### 图 2.14
 
-```{r}
-png(file = "pic-Rplot-24.png")
-par(mfrow = c(2, 2), mar = c(0.5, 0.1, 0.5, 0.1))
-barplot(rep(1, 40), col = rgb(1, seq(0, 1, length = 40), 0.5), axes = FALSE,ann = FALSE)
-barplot(rep(1, 40), col = gray(seq(0, 1, 0.02)), axes = FALSE,ann = FALSE)
-barplot(rep(1, 40), col = rainbow(40, s = 0.8, v = 1, start = 0), axes = FALSE,ann = FALSE)
-barplot(rep(1, 40), col = cm.colors(40), axes = FALSE,ann = FALSE)
-```
-
+![](pic-Rplot-24.png)
 
 ### 文本
 
 参数         | 描述
 ------------ | -------
 **ps**       | 文本尺寸, 指定字体的绝对大小
-cex          | 指定字体相对于默认大小的缩放倍数, 文本的最终大小为 ps*cex
+cex          | 指定字体相对于默认大小的缩放倍数, 文本的最终大小为 ps * cex
 cex.axis     | 坐标轴刻度文字的缩放倍数
 cex.lab      | 坐标轴标签的缩放倍数
 cex.main     | 主标题的缩放倍数
@@ -135,32 +84,7 @@ srt          | 文本旋转角度, 起点为 x 轴正方向
 
 ##### 图 2.15
 
-```{r}
-png(file = "pic-Rplot-25.png")
-par(mar = c(0.4, 0.8, 0.4, 0.8))
-plot(-1, 0, xlim = c(0.5, 4.5), ylim =  c(3, 9), ann = FALSE, axes = FALSE)
-
-text(0.8, 8, paste("family = \"serif\"", "font = 1", sep = "\n"), family = "serif", font = 1, cex = 0.8)
-text(0.8, 6, paste("family = \"sans\"", "font = 1", sep = "\n"), family = "sans", font = 1, cex = 0.8)
-text(0.8, 4, paste("family = \"mono\"", "font = 1", sep = "\n"), family = "mono", font = 1, cex = 0.8)
-
-text(1.6, 8, paste("family = \"serif\"", "font = 2", sep = "\n"), family = "serif", font = 2, cex = 0.8)
-text(1.6, 6, paste("family = \"sans\"", "font = 2", sep = "\n"), family = "sans", font = 2, cex = 0.8)
-text(1.6, 4, paste("family = \"mono\"", "font = 2", sep = "\n"), family = "mono", font = 2, cex = 0.8)
-
-text(2.4, 8, paste("family = \"serif\"", "font = 3", sep = "\n"), family = "serif", font = 3, cex = 0.8)
-text(2.4, 6, paste("family = \"sans\"", "font = 3", sep = "\n"), family = "sans", font = 3, cex = 0.8)
-text(2.4, 4, paste("family = \"mono\"", "font = 3", sep = "\n"), family = "mono", font = 3, cex = 0.8)
-
-text(3.2, 8, paste("family = \"serif\"", "font = 4", sep = "\n"), family = "serif", font = 4, cex = 0.8)
-text(3.2, 6, paste("family = \"sans\"", "font = 4", sep = "\n"), family = "sans", font = 4, cex = 0.8)
-text(3.2, 4, paste("family = \"mono\"", "font = 4", sep = "\n"), family = "mono", font = 4, cex = 0.8)
-
-text(4, 8, paste("family = \"serif\"", "font = 5", sep = "\n"), family = "serif", font = 5, cex = 0.8)
-text(4, 6, paste("family = \"sans\"", "font = 5", sep = "\n"), family = "sans", font = 5, cex = 0.8)
-text(4, 4, paste("family = \"mono\"", "font = 5", sep = "\n"), family = "mono", font = 5, cex = 0.8)
-box(lwd = 0.5)
-```
+![](pic-Rplot-25.png)
 
 - 用以添加文本的低级函数, 效果参见图 2.16
 
@@ -173,7 +97,7 @@ legend()    | 添加图例                    | legend(x, y, legend, fill, angle
 
 ##### 图 2.16
 
-```{r}
+```r
 png(file = "pic-Rplot-26.png")
 plot(1:10, type = "n", xlim = c(0, 12), ylim = c(0, 12), xlab = "", ylab = "")
 title(main = "main-title", sub = "sub-title", xlab = "xlab", ylab = "ylab")
@@ -181,7 +105,7 @@ segments(c(2, 6), c(10, 2), c(6, 10), c(2, 10), lty = c(2, 6), col = c("red", "b
 legend(10.5, 11, c("Red", "Blue"), lty = c(2, 6), col = c("Red", "Blue"), cex = 0.8, bty = "n")
 mtext("mtext(side = 4)", side = 4, line = 0.8, outer = FALSE, las = 0)
 ```
-
+![](pic-Rplot-26.png)
 
 ### 坐标轴
 
@@ -200,26 +124,7 @@ xaxp, yaxp     | 坐标轴刻度的个数
 
 ##### 图 2.17
 
-```{r}
-png(file = "pic-Rplot-27.png")
-par(mfrow = c(2, 2), lheight = 2, bty = "l")
-
-plot(-1, -1, xlim = c(0, 5), ylim = c(0,5), xlab = "xlab", ylab = "ylab", xaxt = "n", las = 0, mgp = c(3, 1, 0), tcl = 0.2, xaxs = "r")
-text(2.5, 3, paste("las = 0, mgp = c(3, 1, 0)", "tcl = 0.2, xaxs = \"r\"", sep = "\n"))
-axis(1, 0:5, 0:5, las = 0, col = "red", tcl = 0.2, mgp = c(3, 1, 0))
-
-plot(-1, -1, xlim = c(0, 5), ylim = c(0,5), xlab = "xlab", ylab = "ylab", xaxt = "n", las = 1, mgp = c(1.5, 1, 0), tcl = 0.6, xaxs = "r")
-text(2.5, 3, paste("las = 1, mgp = c(1.5, 1, 0)", "tcl = 0.6, xaxs = \"r\"", sep = "\n"))
-axis(1, 0:5, 0:5, las = 1, col = "red", tcl = 0.6, mgp = c(1.5, 1, 0))
-
-plot(-1, -1, xlim = c(0, 5), ylim = c(0,5), xlab = "xlab", ylab = "ylab", xaxt = "n", las = 2, mgp = c(3, 2, 0), tcl = -0.2, xaxs = "i")
-text(2.5, 3, paste("las = 2, mgp = c(3, 2, 0)", "tcl = -0.2, xaxs = \"i\"", sep = "\n"))
-axis(1, 0:5, 0:5, las = 2, col = "red", tcl = -0.2, mgp = c(3, 2, 0))
-
-plot(-1, -1, xlim = c(0, 5), ylim = c(0,5), xlab = "xlab", ylab = "ylab", xaxt = "n", las = 3, mgp = c(3, 2, 0.6), tcl = -0.6, xaxs = "i")
-text(2.5, 3, paste("las = 3, mgp = c(3, 2, 0.6)", "tcl = -0.6, xaxs = \"i\"", sep = "\n"))
-axis(1, 0:5, 0:5, las = 2, col = "red", mgp = c(3, 1.4, 0.6), tcl = -0.6)
-```
+![](pic-Rplot-27.png)
 
 - 用以添加坐标轴的低级函数 `axis()` 的主要参数如下:
 
@@ -239,17 +144,7 @@ tck       | 刻度线的长度, 以相对于绘图区域大小的分数表示 (�
 
 ##### 图 2.18
        
-```{r}
-png(file = "pic-Rplot-28.png")
-par(mar = c(0.5, 0.5, 0.5, 0.5))
-plot(x = -1, y = -1, xlim = c(1,14), ylim = c(1, 14), ann = FALSE, axes = FALSE )
-
-rect(1, 1, 14, 14, col = "darkgray")
-rect(2, 2.5, 12.5, 12, col = "lightgray", lty = 2)
-rect(3, 4, 11, 10, col = "gray")
-
-text(c(7, 7, 7), c(7, 11, 13), c("Plot Region", "Figure Region", "Outer Margin"), cex = 1.5, family ="serif", font = 2 )
-```
+![](pic-Rplot-28.png)
 
 参数          | 描述
 ------------- | -------
