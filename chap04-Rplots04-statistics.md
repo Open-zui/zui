@@ -100,7 +100,7 @@ varwidth   | 逻辑值, 箱线图宽度与样本大小的平方根是否成正�
 
 ##### 图 4.15
 
-```{r}
+```r
 par(mfrow = c(1, 2), mar = c(4, 4, 2, 1), mgp = c(2.5, 1, 0))
 
 boxplot(mpg ~ cyl, data = mtcars, notch = FALSE, varwidth = FALSE)
