@@ -11,21 +11,7 @@
 
 ##### 图 3.11
 
-```{r}
-png(file = "pic-Rplot-31.png")
-par(mfrow = c(1, 2), mar = c(5, 2, 2, 2))
-plot(1:10, type = "n", xlab = "mfrow = c(2, 2)", ylab = "", axes = FALSE, mgp = c(1.5,0,0), cex.lab = 1.5)
-abline(h = 5.5)
-abline(v = 5.5)
-text(c(3, 8, 3, 8), c(8, 8, 3, 3), c("1", "2", "3", "4"), cex = 2)
-box()
-
-plot(1:10, type = "n", xlab = "mfcol = c(2, 2)", ylab = "", axes = FALSE, mgp = c(1.5,0,0), cex.lab = 1.5)
-abline(h = 5.5)
-abline(v = 5.5)
-text(c(3, 3, 8, 8), c(8, 3, 8, 3), c("1", "2", "3", "4"), cex = 2)
-box()
-```
+![](pic-Rplot-31.png)
 
 ### 布局设计
 
@@ -39,11 +25,12 @@ heights| 各行高度值组成的一个向量, 表示各行高度的比例
 
 ##### 图 3.12
 
-```{r}
+```r
 png(file = "pic-Rplot-32.png")
 layout(matrix(c(1, 2, 2, 3, 3, 4, 3, 3, 5), byrow = TRUE, 3), heights = c(1, 2, 1), widths = c(1, 1, 1))
 layout.show(5)
 ```
+![](pic-Rplot-32.png)
 
 ### split-screen 方法
 
