@@ -20,7 +20,7 @@
 
 - **ggplot2** 绘图所用数据必须为数据框格式, 本例使用 **ggplot2** 包自带数据集 diamond, 包含五万多颗钻石的价格及其他属性, 从中随机抽取 500个, 仅以展示绘图效果.
 
-```{r}
+```r
 set.seed(123)
 library(ggplot2)
 row <- sample(nrow(diamonds), 500) 
@@ -29,7 +29,7 @@ data <- diamonds[row, ]
 
 - 用函数 `ggplot()` 对数据初始化, 但不会生成图像:
 
-```{r}
+```r
 grap <- ggplot(data)
 ```
 
@@ -41,8 +41,9 @@ grap <- ggplot(data)
 
 ```{r}
 grap + geom_point(aes(x = carat, y = price))
-ggsave(filename = "pic-Rplot-51.png")
 ```
+
+![](pic-Rplot-51.png)
 
 - 表 5.11 给出常用的几何对象, 对应的图形属性可自行查看函数的"帮助", 常见的图形属性见表 5.12
 
@@ -89,8 +90,8 @@ width        | 箱线图的宽度
 
 ##### 图 5.12
 
-```{r}
-library(gridExtra) 
+```r
+library(gridExtra) # 控制图形布局
 p1 <- ggplot(data, aes(x = carat, y = price)) + geom_point()
 p2 <- ggplot(data, aes(x = carat, y = price)) + geom_point(color = "blue")
 p3 <- ggplot(data, aes(x = carat, y = price, color = "blue")) + geom_point()
@@ -98,15 +99,19 @@ p4 <- ggplot(data, aes(x = carat, y = price, shape = cut)) + geom_point(color = 
 grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 ```
 
+![](pic-Rplot-52.png)
+
 - 将观测点分组, 除了将变量映射为形状、颜色等属性, 还可通过图形属性 group 完成, 参见图 5.13
 
 ##### 图 5.13
 
-```{r}
+```r
 p1 <- ggplot(data, aes(x = carat, y = price)) + geom_point(alpha = 0.3) + geom_smooth(method = "lm")
 p2 <- ggplot(data, aes(x = carat, y = price, group = cut)) + geom_point(alpha = 0.3) + geom_smooth(method = "lm")
 grid.arrange(p1, p2, ncol = 2)
 ```
+
+![](pic-Rplot-53.png)
 
 ### 统计变换
 
@@ -114,20 +119,22 @@ grid.arrange(p1, p2, ncol = 2)
 
 ##### 图 5.14 
 
-```{r}
+```r
 grap + geom_bar(aes(x = cut), width = 0.5)
 ```
 
+![](pic-Rplot-54.png)
+
 - 下面代码会生成和图 5.14 相同的图, 旨在展示如何指定几何对象的统计变换:
 
-```{r}
+```r
 cutdata <- as.data.frame(table(data$cut))
 ggplot(cutdata, aes(x = Var1, y = Freq)) + geom_bar(stat = "identity", width = 0.5) + labs(x = "cut", y = "count")
 ```
 
 - 下面代码通过统计变换 `stat_bin()` 生成和图 5.14 相同的图, 此种方法的优点在于可以通过参数更清晰地指定统计变换.
 
-```{r}
+```r
 grap + stat_bin(aes(x = as.numeric(cut)), binwidth = 0.5) + scale_x_continuous(breaks = c(1:5),
   labels = c("Fair", "Good", "Very Good", "Premium", "Ideal")) + labs(x = "cut")
 ```
@@ -150,15 +157,16 @@ stat_smooth()   | 光滑化
 
 ##### 图 5.15
 
-```{r}
+```r
 p1 <- ggplot(data) + geom_boxplot(aes(x = cut, y = price, fill = clarity))
 p2 <- ggplot(data) + geom_boxplot(aes(x = cut, y = price, fill = clarity)) + scale_x_discrete(name = "") + scale_y_continuous(name = "") + scale_fill_brewer(palette = "Set2") 
 grid.arrange(p1, p2, ncol = 1)
 ```
+![](pic-Rplot-55.png)
 
 - 常用的标度见表5.14, 对应的参数可自行查看函数的"帮助", 每个 x 轴标度都有对应的的 y 轴标度.
 
-##### 表5.14
+##### 表 5.14
 
 标度                | 描述
 ------------------- | -------
@@ -177,11 +185,12 @@ scale_size()        | 符号尺寸图例
 
 ##### 图 5.16
 
-```{r}
+```r
 p1 <- ggplot(data) + geom_bar(aes(x = "", fill = color), position = "dodge") + scale_fill_brewer(palette = "Pastel2")
 p2 <- ggplot(data) + geom_bar(aes(x = "", fill = color)) + scale_fill_brewer(palette = "Pastel2") + coord_polar(theta = "y")
 grid.arrange(p1, p2, ncol = 2)
 ```
+![](pic-Rplot-56.png)
 
 ### 分面
 
@@ -199,12 +208,13 @@ facet_grid(. ~ colvar)               | 每个colvar水平的独立图, 配置成
 
 ##### 图 5.17
 
-```{r}
+```r
 p1 <- ggplot(data, aes(x = carat, y = price)) + geom_point(alpha = 0.3) + facet_wrap(~ cut, ncol = 2)
-
 p2 <- ggplot(data, aes(x = carat, y = price)) + geom_point(alpha = 0.3) + facet_grid(cut ~ .)
 grid.arrange(p1, p2, ncol = 2)
 ```
+
+![](pic-Rplot-57.png)
 
 ### 主题
 
@@ -212,7 +222,7 @@ grid.arrange(p1, p2, ncol = 2)
 
 ##### 图 5.18
 
-```{r}
+```r
 ggplot(data, aes(x = carat, y = price, size = cut, fill = cut)) + geom_point(color = "gray", shape = 21) + 
   scale_fill_brewer(palette = "Pastel2") + 
   theme_bw() + 
@@ -221,10 +231,11 @@ ggplot(data, aes(x = carat, y = price, size = cut, fill = cut)) + geom_point(col
         axis.title.y = element_text(angle = 0, vjust = 0.5),
         panel.border = element_rect(color = "gray"))
 ```
+![](pic-Rplot-58.png)
 
 - 常用的主题元素及其所属类型见表 5.16
 
-主题元素         | 类型   | 描述
+主题元素          | 类型   | 描述
 ---------------- | ------ | ------
 axis.text.x      | text   | x 轴刻度标签
 axis.title.y     | text   | x 轴标题
