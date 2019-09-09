@@ -39,7 +39,7 @@ grap <- ggplot(data)
 
 ##### 图 5.11
 
-```{r}
+```r
 grap + geom_point(aes(x = carat, y = price))
 ```
 
@@ -129,14 +129,18 @@ grap + geom_bar(aes(x = cut), width = 0.5)
 
 ```r
 cutdata <- as.data.frame(table(data$cut))
-ggplot(cutdata, aes(x = Var1, y = Freq)) + geom_bar(stat = "identity", width = 0.5) + labs(x = "cut", y = "count")
+ggplot(cutdata, aes(x = Var1, y = Freq)) + 
+geom_bar(stat = "identity", width = 0.5) + 
+labs(x = "cut", y = "count")
 ```
 
 - 下面代码通过统计变换 `stat_bin()` 生成和图 5.14 相同的图, 此种方法的优点在于可以通过参数更清晰地指定统计变换.
 
 ```r
-grap + stat_bin(aes(x = as.numeric(cut)), binwidth = 0.5) + scale_x_continuous(breaks = c(1:5),
-  labels = c("Fair", "Good", "Very Good", "Premium", "Ideal")) + labs(x = "cut")
+grap + 
+stat_bin(aes(x = as.numeric(cut)), binwidth = 0.5) + 
+scale_x_continuous(breaks = c(1:5), labels = c("Fair", "Good", "Very Good", "Premium", "Ideal")) + 
+labs(x = "cut")
 ```
 
 - 常见的统计变换参见表 5.13, 对应的参数可自行查看函数的"帮助".
@@ -159,7 +163,11 @@ stat_smooth()   | 光滑化
 
 ```r
 p1 <- ggplot(data) + geom_boxplot(aes(x = cut, y = price, fill = clarity))
-p2 <- ggplot(data) + geom_boxplot(aes(x = cut, y = price, fill = clarity)) + scale_x_discrete(name = "") + scale_y_continuous(name = "") + scale_fill_brewer(palette = "Set2") 
+p2 <- ggplot(data) + 
+  geom_boxplot(aes(x = cut, y = price, fill = clarity)) + 
+  scale_x_discrete(name = "") + 
+  scale_y_continuous(name = "") + 
+  scale_fill_brewer(palette = "Set2") 
 grid.arrange(p1, p2, ncol = 1)
 ```
 ![](pic-Rplot-55.png)
