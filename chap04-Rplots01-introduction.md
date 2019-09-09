@@ -8,42 +8,25 @@ base 绘图系统（**graphics** 包）一般通过高级函数作出图形, 再
 
 base 绘图系统: 
 
-```r
-png(file = "pic-Rplot-1.1.png")
-
-x <- seq(0, 2*pi, 0.1)
-y <- sin(x)
-
-plot(x, y)
-```
-
-
+![](pic-Rplot-11.png)
 
 lattice 绘图系统:
 
-```{r}
-png(file = "pic-Rplot-1.2.png")
-library(lattice)
-xyplot(y ~ x)
-```
+![](pic-Rplot-12.png)
 
 ggplot2 绘图系统:
 
-```{r}
-png(file = "pic-Rplot-1.3.png")
-library(ggplot2)
-qplot(x, y)
-```
+![](pic-Rplot-13.png)
 
 #### 绘图设备
 
-- 关于 R 语言绘图系统, 还需了解其绘图设备. 其包含窗口和图形两种: 
+- 关于 R 语言绘图系统, 还需了解绘图设备. 其包含窗口和图形两种: 
      - 窗口设备指屏幕上的绘图窗口, 默认情况下调用绘图函数时, 图形将绘制于此;
      - 图形设备指绘图结果被保存到文件 (一般默认工作目录)中.
 
 例如将上述 ggplot2 绘图结果以 PDF 格式保存:
 
-```{r}
+```r
 pdf(file = "ggplot.pdf", width = 5, height = 4)
 qplot(x, y)
 dev.off() # 关闭图形设备
